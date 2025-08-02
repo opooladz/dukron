@@ -259,11 +259,14 @@ def scale_by_quad(
 					print(f"PSGD Quad Momentum size: {mu_n_elements} elements, {mu_size_MB:.2f} MB")
 
 		if return_partition_specs_only:
+			# Ls_lipschitz has same tree structure as params but each leaf is a list of scalars
+			# that should not be sharded
+			Ls_sharding = jax.tree.map(lambda _: None, params)
 			return dict(
 				count=PartitionSpec(),
 				mu=mu_sharding,
 				Qs_preconditioners=Qs_sharding,
-				Ls_lipschitz=PartitionSpec(None),
+				Ls_lipschitz=Ls_sharding,
 			)
 
 		return dict(
