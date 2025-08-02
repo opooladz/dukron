@@ -261,7 +261,12 @@ def scale_by_quad(
 		if return_partition_specs_only:
 			# Ls_lipschitz has same tree structure as params but each leaf is a list of scalars
 			# that should not be sharded
-			Ls_sharding = jax.tree.map(lambda _: None, params)
+			def create_ls_sharding(param, scanned):
+				# Each parameter has a list of L values (one per dimension)
+				# These are scalars and should not be sharded
+				return [PartitionSpec() for _ in range(len(param.shape[int(scanned):]))]
+			
+			Ls_sharding = jax.tree.map(create_ls_sharding, params, scanned_layers_)
 			return dict(
 				count=PartitionSpec(),
 				mu=mu_sharding,
