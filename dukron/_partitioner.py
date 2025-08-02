@@ -60,7 +60,7 @@ class BlockPartitioner:
 				sizes = np.full(nsplit + 1, block_size, dtype=np.int32)
 				sizes[-1] = d - indices[-1]
 
-				self._splits.append(SplitInfo(i, indices, sizes))
+				self._splits.append(SplitInfo(axis=i, indices=indices, sizes=sizes))
 				split_sizes.append(sizes)
 			else:
 				split_sizes.append(np.array([d], dtype=np.int32))
