@@ -809,7 +809,7 @@ def _init_Q_exprs(
 
 	for i, (size, dim_d, dim_sh) in enumerate(zip(t_shape, dim_diag, params_specs)):
 		if existing_L is None:
-			L.append(jnp.zeros((1,), dtype=jnp.float32))
+			L.append(jnp.zeros([], dtype=jnp.float32))
 			
 		if dim_d:
 			# use diagonal matrix as preconditioner for this dim
